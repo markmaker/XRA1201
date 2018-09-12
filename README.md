@@ -6,22 +6,22 @@ exception of the Polarity Inversion Register).
 
 The I/O pins are used "Arduino style" with very similar functions.
 
-  XRA1201 iox;
-  iox.begin();
-  iox.pinMode(pin2, OUTPUT);
-  val = iox.digitalRead(pin);
-  iox.digitalWrite(pin2, val);
+    XRA1201 iox;
+    iox.begin();
+    iox.pinMode(pin2, OUTPUT);
+    val = iox.digitalRead(pin);
+    iox.digitalWrite(pin2, val);
 
 Setting pin modes and outputs can either be done synchonously (default) or 
 in a "retained" mode, where changes for multiple pins are buffered and then 
 efficiently sent to the device using one I2C transmission. 
 
-  iox.beginTransaction();
-  iox.pinMode(pin2, OUTPUT);
-  iox.digitalWrite(pin2, LOW);
-  iox.pinMode(pin3, OUTPUT_OPENDRAIN);
-  iox.digitalWrite(pin3, HIGH);
-  iox.endTransaction();
+    iox.beginTransaction();
+    iox.pinMode(pin2, OUTPUT);
+    iox.digitalWrite(pin2, LOW);
+    iox.pinMode(pin3, OUTPUT_OPENDRAIN);
+    iox.digitalWrite(pin3, HIGH);
+    iox.endTransaction();
 
 Reading pins is currently done using single synchronous read through I2C. 
 
