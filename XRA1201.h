@@ -55,7 +55,7 @@ class XRA1201  {
      TwoWire &wire;
      uint8_t address;
      uint8_t interruptPin;
-     bool retained;
+     bool retainedMode;
      uint32_t modified;
      uint8_t controlRegister[XRA1201_REGISTER_COUNT];
      uint8_t opendrain[2];

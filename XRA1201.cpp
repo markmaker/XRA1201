@@ -78,8 +78,8 @@ efficiently sent to the device using one I2C transmission.
 
 Reading pins is currently done using single synchronous read through I2C. 
 
-There is also a "pin abstraction", a small struct acting as a pin (usually just an int) 
-that can the be used like a normal pin: 
+There is also a "pin abstraction", a small struct acting as a "pin number" 
+(normally just an int) that can syntactically be used like a normal pin: 
 
     XRA1201 Meteo::IOxMeteo(0x22);
     
@@ -96,7 +96,7 @@ that can the be used like a normal pin:
 Of course these pins can only be used in your own code, as they are not simple ints that
 can be passed to third party libraries etc.
 
-Also be aware that these expander GPIOs are much slower!
+Also be aware that these expander GPIOs are much slower than built-in ones!
 
 */
 
@@ -134,7 +134,7 @@ Also be aware that these expander GPIOs are much slower!
 // 
 XRA1201::XRA1201(uint8_t address, TwoWire &wire)
   : wire(wire), address(address), 
-  interruptPin(0), retained(0), modified(0) {
+  interruptPin(0), retainedMode(0), modified(0) {
   this->initialize();
 }
 
@@ -260,7 +260,7 @@ void XRA1201::setInterrupt(uint8_t pin) {
 //   None
 // 
 void XRA1201::beginTransaction() {
-  this->retained = true;
+  this->retainedMode = true;
 }
 
 // Description
@@ -277,7 +277,7 @@ void XRA1201::beginTransaction() {
 // 
 uint8_t XRA1201::endTransaction() {
   uint8_t ret = this->writeSettings();
-  this->retained = false;
+  this->retainedMode = false;
   return ret;
 }
 
@@ -507,7 +507,7 @@ void XRA1201::touch(uint8_t cr){
 
 // Internal helper to update the XRA1201 configurations registers. Does nothing in retained mode.
 uint8_t XRA1201::update() {
-  if (! this->retained) {
+  if (! this->retainedMode) {
     return this->writeSettings();
   }
   return 0;
